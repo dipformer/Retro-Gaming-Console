@@ -1,0 +1,5 @@
+############################################
+#  Syntax Coloring Map For AVR Game board  #
+############################################
+
+GameBoard	KEYWORD1
