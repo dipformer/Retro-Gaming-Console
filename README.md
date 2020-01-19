@@ -1,10 +1,8 @@
-# AVR-Game-board
-Library for Arduino IDE for programming AVR Game board.
-The library fully controls the use of the AVR Game board
-1. Draw in led matrix
-2. Draw in digital led
-3. Read key state
-4. Play sound
+# Библиотека для платы AVR Game board
+Плата **AVR Game board** это Arduino совместимое устройство на микроконтроллере ATmega328 в форм-факторе игровой консоли. Плата разработана для обучения программированию игровых сценариев. Программирование платы осуществляется при помощи Arduino IDE и специализированной библиотеки. Библиотека поддерживает все основные функции по работе с железом, при использовании библиотеки написание программного кода полностью сосредотачивается на логике игрового сценария, визуализации сцены.
+Плата **AVR Game board** состоит из следующих элементов:
+- основной дисплей из светодиодной матрицы размером 8x16 точек;
+- цифровой трехсимвольный дисплей;
+- 6 кнопок управления, включа четыре кнопки направления, кнопка FIRE, кнопка RETURN;
+- зуммер для воспроизведения звуков.
 
-<h2>Draw in led matrix</h2>
-Use the <b>GameBoard.matrix[0..15]</b> array to write new screen. The <b>GameBoard.matrix</b> array has 16 byte it coincides with 16 rows of LEDs. The bottom row matches with <b>GameBoard.matrix[0]</b>. Each row has 8 LEDs, it matches 8 bits of one byte of the array. To turn on the right LED, write the value 0x01 to the array item. Write the value 0x80 to turn on the left LED.</b>
