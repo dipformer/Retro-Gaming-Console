@@ -48,6 +48,7 @@ const uint16_t notesFreq_PGM[] PROGMEM = { 0, 4186, 4435, 4699, 4978, 5274, 5588
 const uint8_t notesDurations_PGM[] PROGMEM = { 0, 1, 2, 3, 5, 7, 11, 15, 23, 31, 47, 63, 111, 127, 239, 255};  
 
 uint16_t * buzzerBuf = 0;
+uint16_t * buzzerBufForRepeat;
 uint8_t buzzerTempo = 0;
 uint32_t buzzerTimeCnt=0;
 uint32_t buzzer_cnt;
@@ -122,7 +123,7 @@ void CGameBoard::begin () {
   loadMax7219Registers (MAX7219_REG_ScanLimit, 0x07, GB_DIGIT_COUNT-1);      
   loadMax7219Registers (MAX7219_REG_Shutdown, 0x01, 0x01);    
   loadMax7219Registers (MAX7219_REG_DisplayTest, 0x00, 0x00); 
-  ledsUpdate ();
+  show ();
 
 }
 
@@ -133,6 +134,7 @@ void CGameBoard::playMelody (const uint16_t * buf) {
 void CGameBoard::playMelody (const uint16_t * buf, uint8_t tempo) {
   buzzerTempo = tempo;
   buzzerBuf = buf;
+  buzzerBufForRepeat = buf;
   buzzerTimeCnt = 0;
 }
 
@@ -212,34 +214,34 @@ void CGameBoard::showEffect () {
     for (uint8_t i=0; i<(GB_MATRIX_LINES>>1); i++) {
       matrix[i]=0xff;
       matrix[GB_MATRIX_LINES-i-1]=0xff;
-      ledsUpdate ();
+      show ();
       delay (30);
     }   
     for (int8_t i=(GB_MATRIX_LINES>>1)-1; i>=0; i--) {
       matrix[i]=newMatrix[i];
       matrix[GB_MATRIX_LINES-i-1]=newMatrix[GB_MATRIX_LINES-i-1];
-      ledsUpdate ();
+      show ();
       delay (30);
     }
   }
   else if (effect==GB_MATRIX_EFFECT_LEFT) {
     for (uint8_t c=0; c<GB_MATRIX_COLS; c++) {
       for (uint8_t i=0; i<GB_MATRIX_LINES; i++) matrix[i] = (copyMatrix[i]>>c) | (newMatrix[i]<<(7-c)); 
-      ledsUpdate ();
+      show ();
       delay (30);      
     }
   }
   else if (effect==GB_MATRIX_EFFECT_RIGHT) {
     for (uint8_t c=0; c<GB_MATRIX_COLS; c++) {
       for (uint8_t i=0; i<GB_MATRIX_LINES; i++) matrix[i] = (copyMatrix[i]<<c) | (newMatrix[i]>>(7-c)); 
-      ledsUpdate ();
+      show ();
       delay (30);      
     }
   }
-  else ledsUpdate ();
+  else show ();
 }
 
-void CGameBoard::ledsUpdate () {
+void CGameBoard::show () {
   if (matrixEffect!=0) {
     showEffect ();
   }
@@ -292,6 +294,10 @@ void CGameBoard::clearKeyBuffer () {
   keysBufferPos = 0;
 }
 
+uint8_t CGameBoard::getKeysState () {
+  return keysState;
+}
+
 
 ISR(TIMER1_COMPA_vect) {
   if (buzzerTimeCnt) {
@@ -307,6 +313,7 @@ ISR(TIMER1_COMPA_vect) {
   if ((buzzerTimeCnt==0) && (buzzerBuf!=0)) {
     uint16_t c = pgm_read_word (buzzerBuf++);
     if (c == MELODY_END) buzzerBuf=0;
+    else if (c == MELODY_REPEAT) buzzerBuf = buzzerBufForRepeat;
     else {
       buzzer_cnt = 0;
       uint8_t note = c & 0xf;

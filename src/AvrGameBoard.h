@@ -11,6 +11,7 @@
 #define GB_MATRIX_COLS 8
 #define GB_MAX_INTENSITY 15
 
+#define GB_KEYCODE_NOT_PRESSED 0x00
 #define GB_KEYCODE_RETURN 0x20
 #define GB_KEYCODE_LEFT 0x01
 #define GB_KEYCODE_RIGHT 0x02
@@ -79,6 +80,7 @@
 
 
 #define MELODY_END 0xffff
+#define MELODY_REPEAT 0xfffe
 
 
 class CGameBoard {
@@ -100,10 +102,11 @@ class CGameBoard {
   uint8_t printNumberToMatrix (uint8_t n, uint8_t x, uint8_t y);
   void startEffect (uint8_t effect);
   
-  void ledsUpdate ();
+  void show ();
 
   uint8_t getPressedKey ();
   void clearKeyBuffer ();
+  uint8_t getKeysState ();
 
   private:
   void loadMax7219Registers (uint8_t reg, uint8_t mValue, uint8_t dValue); 
@@ -124,5 +127,6 @@ class CGameBoard {
 
 
 extern CGameBoard GameBoard;
+
 
 #endif // AVRGAMEBOARD_H
