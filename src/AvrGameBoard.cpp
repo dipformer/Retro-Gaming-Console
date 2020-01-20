@@ -132,15 +132,19 @@ void CGameBoard::playMelody (const uint16_t * buf) {
 }
 
 void CGameBoard::playMelody (const uint16_t * buf, uint8_t tempo) {
+  CLR (TIMSK1, OCIE1A);
   buzzerTempo = tempo;
   buzzerBuf = buf;
   buzzerBufForRepeat = buf;
   buzzerTimeCnt = 0;
+  SET (TIMSK1, OCIE1A);
 }
 
 void CGameBoard::stopMelody () {
+  CLR (TIMSK1, OCIE1A);
   buzzerBuf = 0;
   buzzerTimeCnt = 0;
+  SET (TIMSK1, OCIE1A);
 }
 
 
