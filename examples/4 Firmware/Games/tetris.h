@@ -28,7 +28,9 @@ const uint16_t tetrisFigurs_PGM [TETRIS_FIGURE_COUNT][4] PROGMEM = {
 const uint16_t tetrisSound_Fall_PGM [] PROGMEM = {NOTE_F|OCT_5|DUR_32, MELODY_END};
 const uint16_t tetrisSound_FullLine_PGM [] PROGMEM = {NOTE_C|OCT_5|DUR_32, NOTE_D|OCT_5|DUR_32, NOTE_E|OCT_5|DUR_32, NOTE_F|OCT_5|DUR_32, NOTE_G|OCT_5|DUR_32, NOTE_A|OCT_5|DUR_32, NOTE_B|OCT_5|DUR_32, MELODY_END};
 
-const uint16_t TetrisMelody[] PROGMEM = {
+const uint16_t TetrisMelody_PGM[] PROGMEM = {
+  NOTE_C|OCT_2|DUR_2,
+  NOTE_PAUSE|DUR_1,
   NOTE_E|OCT_5|DUR_8, NOTE_E|OCT_3|DUR_8, NOTE_B|OCT_4|DUR_8, NOTE_C|OCT_5|DUR_8, NOTE_D|OCT_5|DUR_8, NOTE_E|OCT_5|DUR_16, NOTE_D|OCT_5|DUR_16, NOTE_C|OCT_5|DUR_8, 
   NOTE_B|OCT_4|DUR_8, NOTE_A|OCT_4|DUR_8, NOTE_A|OCT_3|DUR_8, NOTE_A|OCT_4|DUR_8, NOTE_C|OCT_5|DUR_8, NOTE_E|OCT_5|DUR_8, NOTE_A|OCT_3|DUR_8, NOTE_D|OCT_5|DUR_8,
   NOTE_C|OCT_5|DUR_8, NOTE_B|OCT_4|DUR_8, NOTE_E|OCT_4|DUR_8, NOTE_G|OCT_4|DUR_8, NOTE_C|OCT_5|DUR_8, NOTE_D|OCT_5|DUR_8, NOTE_E|OCT_3|DUR_8, NOTE_E|OCT_5|DUR_8,
@@ -148,7 +150,7 @@ uint8_t tetrisRun () {
     figureAngle = 0;
     tetrisGetFigure (figureNum, figureAngle, figurePosX, figure);
     if (tetrisCheckFigureInGlass (glass, figure, figurePosY) != 0) {  // game over
-      GameBoard.playMelody (TetrisMelody);
+      GameBoard.playMelody (TetrisMelody_PGM);
       return 0;
     }
 

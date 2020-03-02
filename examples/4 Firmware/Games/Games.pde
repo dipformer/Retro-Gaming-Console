@@ -15,11 +15,18 @@ uint8_t * anime[GAMES_COUNT] = {tetris_Anime_PGM, snake_Anime_PGM, galaxian_Anim
 #define DEMOS_COUNT 3
 uint8_t (*demos[DEMOS_COUNT])() = {demoFire, demoRandom, demoMatrix};
 
+const uint16_t startSound_PGM [] PROGMEM = { 
+  NOTE_Fm|OCT_4|DUR_16, NOTE_Fm|OCT_4|DUR_16, NOTE_Fm|OCT_4|DUR_16, NOTE_D|OCT_4|DUR_4, NOTE_PAUSE|DUR_16, 
+  NOTE_E|OCT_4|DUR_16, NOTE_E|OCT_4|DUR_16, NOTE_E|OCT_4|DUR_16, NOTE_C|OCT_4|DUR_4, 
+  MELODY_END
+};
+
 int8_t idDemo = 0;
 int8_t idGame = 0;
 
 void setup() {
   GameBoard.begin (); 
+  GameBoard.playMelody (startSound_PGM);
 }
 
 
@@ -54,6 +61,7 @@ void  playDemos () {
 int8_t selectGame () {
   uint8_t frame = 0;
   GameBoard.stopMelody ();
+  GameBoard.setMatrixIntensity (10);
   GameBoard.startEffect (GB_MATRIX_EFFECT_LINES);
   while (true) {
     GameBoard.clearMatrix ();

@@ -16,7 +16,7 @@ uint8_t demoFire () {
   
   GameBoard.clearKeyBuffer ();
   GameBoard.clearDigit ();
-  GameBoard.stopMelody ();
+  
 
   for (uint8_t i=0; i<GB_MATRIX_COLS; i++) {
     flame[i]=0;
